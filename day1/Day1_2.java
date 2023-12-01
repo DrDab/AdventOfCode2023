@@ -20,7 +20,6 @@ public class Day1_2 {
         return -1;
     }
 
-
     public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(new File("inputs/1.in"));
         
