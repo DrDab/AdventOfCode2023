@@ -8,7 +8,7 @@ public class Day1_2 {
     private static final String[] NUMS = new String[]{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
 
     private static int numValue(String s, int i) {
-        if (s.charAt(i) >= '0' && s.charAt(i) <= '9') return Integer.parseInt(s.charAt(i) + "");
+        if (s.charAt(i) >= '0' && s.charAt(i) <= '9') return s.charAt(i) - '0';
 
         for (int j = 0; j < NUMS.length; j++) {
             String numStr = NUMS[j];
