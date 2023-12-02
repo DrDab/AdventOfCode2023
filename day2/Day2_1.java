@@ -39,8 +39,6 @@ public class Day2_1 {
             if (mr <= RL && mb <= BL && mg <= GL) {
                 sum += game;
             }
-
-
         }
 
         System.out.println(sum);
