@@ -18,12 +18,14 @@ public class Day2_1 {
         while (sc.hasNextLine()) {
             StringTokenizer st = new StringTokenizer(sc.nextLine());
             st.nextToken();
+
             int game = Integer.parseInt(st.nextToken().replaceAll(":", ""));
             int mr = 0;
             int mg = 0;
             int mb = 0;
+            boolean isValid = true;
 
-            while (st.hasMoreTokens()) {
+            while (isValid && st.hasMoreTokens()) {
                 int num = Integer.parseInt(st.nextToken());
                 String color = st.nextToken();
 
@@ -34,9 +36,11 @@ public class Day2_1 {
                 } else {
                     mg = Math.max(num, mg);
                 }
+
+                isValid = mr <= RL && mb <= BL && mg <= GL;
             }
 
-            if (mr <= RL && mb <= BL && mg <= GL) {
+            if (isValid) {
                 sum += game;
             }
         }
