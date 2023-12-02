@@ -14,7 +14,7 @@ public class Day2_2 {
         while (sc.hasNextLine()) {
             StringTokenizer st = new StringTokenizer(sc.nextLine());
             st.nextToken();
-            int game = Integer.parseInt(st.nextToken().replaceAll(":", ""));
+            st.nextToken();
             int mr = 0;
             int mg = 0;
             int mb = 0;
