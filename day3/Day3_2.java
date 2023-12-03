@@ -90,7 +90,7 @@ public class Day3_2 {
                         clearTmp(i - dir[0], j - dir[1]);
                     }
 
-                    // If there are exactly two adjacent numbers, then add the sum.
+                    // If there are exactly two adjacent numbers, then add the product.
                     if (adj == 2) {
                         sum += product;
                     }
