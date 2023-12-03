@@ -8,7 +8,7 @@ public class Day3_2 {
     private static int m = 0;
     private static int n = 0;
     private static char[][] map = new char[200][200];
-    private static boolean[][] tmp = new boolean[200][200];
+    private static boolean[][] visited = new boolean[200][200];
 
     private static int[][] dirs = new int[][] { { -1, -1 },
             { -1, 0 },
@@ -21,19 +21,19 @@ public class Day3_2 {
 
     // Return the corresponding number if map[r][c] is the cell of an undiscovered number, -1 otherwise.
     private static long inspect(int r, int c) {
-        if (r < 0 || r >= m || c < 0 || c >= n || map[r][c] < '0' || map[r][c] > '9' || tmp[r][c])
+        if (r < 0 || r >= m || c < 0 || c >= n || map[r][c] < '0' || map[r][c] > '9' || visited[r][c])
             return -1L;
 
         int lowest = c;
         int highest = c;
 
         for (int nc = c; nc < n && map[r][nc] >= '0' && map[r][nc] <= '9'; nc++) {
-            tmp[r][nc] = true;
+            visited[r][nc] = true;
             highest = nc;
         }
 
         for (int nc = c; nc >= 0 && map[r][nc] >= '0' && map[r][nc] <= '9'; nc--) {
-            tmp[r][nc] = true;
+            visited[r][nc] = true;
             lowest = nc;
         }
 
@@ -48,16 +48,16 @@ public class Day3_2 {
         return res;
     }
 
-    private static void clearTmp(int r, int c) {
+    private static void clearVisited(int r, int c) {
         if (r < 0 || r >= m || c < 0 || c >= n || map[r][c] < '0' || map[r][c] > '9')
             return;
 
-        for (int nc = c; nc < n && tmp[r][nc]; nc++) {
-            tmp[r][nc] = false;
+        for (int nc = c; nc < n && visited[r][nc]; nc++) {
+            visited[r][nc] = false;
         }
 
-        for (int nc = c; nc >= 0 && tmp[r][nc]; nc--) {
-            tmp[r][nc] = false;
+        for (int nc = c; nc >= 0 && visited[r][nc]; nc--) {
+            visited[r][nc] = false;
         }
     }
 
@@ -86,8 +86,9 @@ public class Day3_2 {
                             break;
                     }
 
+                    // Unmark the visited cells.
                     for (int[] dir : dirs) {
-                        clearTmp(i - dir[0], j - dir[1]);
+                        clearVisited(i - dir[0], j - dir[1]);
                     }
 
                     // If there are exactly two adjacent numbers, then add the product.
