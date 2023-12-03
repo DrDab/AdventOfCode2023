@@ -19,7 +19,8 @@ public class Day3_2 {
             { 1, 0 },
             { 1, 1 } };
 
-    // Return the corresponding number if map[r][c] is the cell of an undiscovered number, -1 otherwise.
+    // Return the corresponding number if map[r][c] is the cell of an undiscovered
+    // number, -1 otherwise.
     private static long inspect(int r, int c) {
         if (r < 0 || r >= m || c < 0 || c >= n || map[r][c] < '0' || map[r][c] > '9' || visited[r][c])
             return -1L;
@@ -32,7 +33,7 @@ public class Day3_2 {
             highest = nc;
         }
 
-        for (int nc = c; nc >= 0 && map[r][nc] >= '0' && map[r][nc] <= '9'; nc--) {
+        for (int nc = c - 1; nc >= 0 && map[r][nc] >= '0' && map[r][nc] <= '9'; nc--) {
             visited[r][nc] = true;
             lowest = nc;
         }
@@ -49,14 +50,14 @@ public class Day3_2 {
     }
 
     private static void clearVisited(int r, int c) {
-        if (r < 0 || r >= m || c < 0 || c >= n || map[r][c] < '0' || map[r][c] > '9')
+        if (r < 0 || r >= m || c < 0 || c >= n || !visited[r][c])
             return;
 
         for (int nc = c; nc < n && visited[r][nc]; nc++) {
             visited[r][nc] = false;
         }
 
-        for (int nc = c; nc >= 0 && visited[r][nc]; nc--) {
+        for (int nc = c - 1; nc >= 0 && visited[r][nc]; nc--) {
             visited[r][nc] = false;
         }
     }
