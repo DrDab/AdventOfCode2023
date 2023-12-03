@@ -32,7 +32,7 @@ public class Day3_2 {
             highest = nc;
         }
 
-        for (int nc = c; nc >= 0 && map[r][nc] >= '0' && map[r][nc] <= '9'; nc--) {
+        for (int nc = c - 1; nc >= 0 && map[r][nc] >= '0' && map[r][nc] <= '9'; nc--) {
             visited[r][nc] = true;
             lowest = nc;
         }
@@ -56,7 +56,7 @@ public class Day3_2 {
             visited[r][nc] = false;
         }
 
-        for (int nc = c; nc >= 0 && visited[r][nc]; nc--) {
+        for (int nc = c - 1; nc >= 0 && visited[r][nc]; nc--) {
             visited[r][nc] = false;
         }
     }
