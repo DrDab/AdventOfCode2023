@@ -8,10 +8,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 public class Day4_1 {
-    private static int m = 0;
-    private static int n = 0;
-    
-
     public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(new File("inputs/4.in"));
 
