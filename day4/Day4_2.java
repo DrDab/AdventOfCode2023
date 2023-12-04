@@ -38,7 +38,7 @@ public class Day4_2 {
         long sol = 0L;
 
         for (Integer cardNum : cardToMatchMap.keySet()) {
-            sol += calculate(cardNum) + 1;
+            sol += calculate(cardNum) + 1L;
         }
 
         System.out.println(sol);
