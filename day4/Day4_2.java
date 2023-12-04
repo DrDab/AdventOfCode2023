@@ -35,10 +35,12 @@ public class Day4_2 {
     public static void main(String[] args) throws IOException {
         parse();
 
-        long sol = 0L;
+        // Sum the number of initial cards...
+        long sol = cardToMatchMap.size();
 
+        // Then add the number of recursively won cards for each card.
         for (Integer cardNum : cardToMatchMap.keySet()) {
-            sol += calculate(cardNum) + 1L;
+            sol += calculate(cardNum);
         }
 
         System.out.println(sol);
