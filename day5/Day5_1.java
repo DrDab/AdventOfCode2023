@@ -30,7 +30,9 @@ public class Day5_1 {
     @SuppressWarnings("unchecked")
     private static List<Range>[] maps = new ArrayList[NUM_MAPS];
 
-    public static void explore(Set<Long> res, long seed, int mapId) {
+    private static long sol = Long.MAX_VALUE;
+
+    public static void explore(long seed, int mapId) {
         List<Range> ranges = maps[mapId];
 
         boolean wingIt = true;
@@ -40,9 +42,9 @@ public class Day5_1 {
                 long nextQuery = r.resolveDest(seed);
 
                 if (mapId + 1 < NUM_MAPS) {
-                    explore(res, nextQuery, mapId + 1);
+                    explore(nextQuery, mapId + 1);
                 } else {
-                    res.add(nextQuery);
+                    sol = Math.min(sol, nextQuery);
                 }
 
                 wingIt = false;
@@ -51,9 +53,9 @@ public class Day5_1 {
 
         if (wingIt) {
             if (mapId + 1 < NUM_MAPS) {
-                explore(res, seed, mapId + 1);
+                explore(seed, mapId + 1);
             } else {
-                res.add(seed);
+                sol = Math.min(sol, seed);
             }
         }
     }
@@ -61,14 +63,8 @@ public class Day5_1 {
     public static void main(String[] args) throws IOException {
         parse();
 
-        long sol = Long.MAX_VALUE;
-
         for (Long seed : seeds) {
-            Set<Long> hs = new HashSet<>();
-            explore(hs, seed, 0);
-            for (Long l : hs) {
-                sol = Math.min(l, sol);
-            }
+            explore(seed, 0);
         }
 
         System.out.println(sol);

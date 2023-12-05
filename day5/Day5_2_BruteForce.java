@@ -31,7 +31,9 @@ public class Day5_2_BruteForce {
     @SuppressWarnings("unchecked")
     private static List<Range>[] maps = new ArrayList[NUM_MAPS];
 
-    public static void explore(Set<Long> res, long seed, int mapId) {
+    private static long sol = Long.MAX_VALUE;
+
+    public static void explore(long seed, int mapId) {
         List<Range> ranges = maps[mapId];
 
         boolean wingIt = true;
@@ -41,9 +43,9 @@ public class Day5_2_BruteForce {
                 long nextQuery = r.resolveDest(seed);
 
                 if (mapId+1 < NUM_MAPS) {
-                    explore(res, nextQuery, mapId+1);
+                    explore(nextQuery, mapId+1);
                 } else {
-                    res.add(nextQuery);
+                    sol = Math.min(sol, nextQuery);
                 }
                 
                 wingIt = false;
@@ -52,9 +54,9 @@ public class Day5_2_BruteForce {
 
         if (wingIt) {
             if (mapId+1 < NUM_MAPS) {
-                explore(res, seed, mapId+1);
+                explore(seed, mapId+1);
             } else {
-                res.add(seed);
+                sol = Math.min(sol, seed);
             }
         }
     }
@@ -62,22 +64,16 @@ public class Day5_2_BruteForce {
     public static void main(String[] args) throws IOException {
         parse();
 
-        long min = Long.MAX_VALUE;
-
         for (int i = 0; i < seedStarts.size(); i++) {
             long seedStart = seedStarts.get(i);
             long seedEnd = seedStart + seedLens.get(i) - 1L;
 
             for (long seed = seedStart; seed <= seedEnd; seed++) {
-                Set<Long> hs = new HashSet<>();
-                explore(hs, seed, 0);
-                for (Long l : hs) {
-                    min = Math.min(l, min);
-                }
+                explore(seed, 0);
             }
         }
 
-        System.out.println(min);
+        System.out.println(sol);
     }
 
     public static void parse() throws IOException {
