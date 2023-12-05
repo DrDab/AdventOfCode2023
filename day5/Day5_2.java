@@ -63,9 +63,9 @@ public class Day5_2 {
 
     public static void main(String[] args) throws IOException {
         parse();
+        Set<Long> possibleSeeds = new HashSet<>();
 
         for (long dest = 0L;; dest++) {
-            Set<Long> possibleSeeds = new HashSet<>();
             exploreBack(possibleSeeds, dest, NUM_MAPS - 1);
 
             for (Long seed : possibleSeeds) {
@@ -78,6 +78,8 @@ public class Day5_2 {
                     }
                 }  
             }
+
+            possibleSeeds.clear();
         }
     }
 
