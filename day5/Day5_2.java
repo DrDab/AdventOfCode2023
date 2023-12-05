@@ -3,7 +3,7 @@ package day5;
 import java.util.*;
 import java.io.*;
 
-public class Day5_1 {
+public class Day5_2 {
     private static class Range {
         public long sourceStart;
         public long sourceEnd;
@@ -25,7 +25,8 @@ public class Day5_1 {
     private static final boolean DEBUG = false;
     private static final int NUM_MAPS = 7;
 
-    private static Set<Long> seeds = new HashSet<>();
+    private static List<Long> seedStarts = new ArrayList<>();
+    private static List<Long> seedLens = new ArrayList<>();
 
     @SuppressWarnings("unchecked")
     private static List<Range>[] maps = new ArrayList[NUM_MAPS];
@@ -39,19 +40,19 @@ public class Day5_1 {
             if (seed >= r.sourceStart && seed <= r.sourceEnd) {
                 long nextQuery = r.resolveDest(seed);
 
-                if (mapId + 1 < NUM_MAPS) {
-                    explore(res, nextQuery, mapId + 1);
+                if (mapId+1 < NUM_MAPS) {
+                    explore(res, nextQuery, mapId+1);
                 } else {
                     res.add(nextQuery);
                 }
-
+                
                 wingIt = false;
             }
         }
 
         if (wingIt) {
-            if (mapId + 1 < NUM_MAPS) {
-                explore(res, seed, mapId + 1);
+            if (mapId+1 < NUM_MAPS) {
+                explore(res, seed, mapId+1);
             } else {
                 res.add(seed);
             }
@@ -61,17 +62,24 @@ public class Day5_1 {
     public static void main(String[] args) throws IOException {
         parse();
 
-        long sol = Long.MAX_VALUE;
+        long min = Long.MAX_VALUE;
 
-        for (Long seed : seeds) {
-            Set<Long> hs = new HashSet<>();
-            explore(hs, seed, 0);
-            for (Long l : hs) {
-                sol = Math.min(l, sol);
+        for (int i = 0; i < seedStarts.size(); i++) {
+            long seedStart = seedStarts.get(i);
+            long seedEnd = seedStart + seedLens.get(i) - 1L;
+
+            System.out.println(i + ") " + seedStart + " " + seedEnd);
+
+            for (long seed = seedStart; seed <= seedEnd; seed++) {
+                Set<Long> hs = new HashSet<>();
+                explore(hs, seed, 0);
+                for (Long l : hs) {
+                    min = Math.min(l, min);
+                }
             }
         }
 
-        System.out.println(sol);
+        System.out.println(min);
     }
 
     public static void parse() throws IOException {
@@ -80,7 +88,8 @@ public class Day5_1 {
         st.nextToken();
 
         while (st.hasMoreTokens()) {
-            seeds.add(Long.parseLong(st.nextToken()));
+            seedStarts.add(Long.parseLong(st.nextToken()));
+            seedLens.add(Long.parseLong(st.nextToken()));
         }
 
         sc.nextLine();
