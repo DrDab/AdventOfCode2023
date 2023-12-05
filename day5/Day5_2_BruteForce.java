@@ -3,24 +3,22 @@ package day5;
 import java.util.*;
 import java.io.*;
 
-public class Day5_2 {
+public class Day5_2_BruteForce {
     private static class Range {
         public long sourceStart;
         public long sourceEnd;
         public long destStart;
-        public long destEnd;
 
         public Range(long sourceStart, long destStart, long maxDelta) {
             this.sourceStart = sourceStart;
             this.destStart = destStart;
             this.sourceEnd = sourceStart + maxDelta;
-            this.destEnd = destStart + maxDelta;
         }
 
-        public long resolveSrc(long dest) {
-            if (dest > destEnd)
+        public long resolveDest(long source) {
+            if (source > sourceEnd)
                 throw new IllegalArgumentException("Out of range bounds!");
-            return sourceStart + (dest - destStart);
+            return destStart + (source - sourceStart);
         }
     }
 
@@ -33,30 +31,30 @@ public class Day5_2 {
     @SuppressWarnings("unchecked")
     private static List<Range>[] maps = new ArrayList[NUM_MAPS];
 
-    public static void exploreBack(Set<Long> res, long dest, int mapId) {
+    public static void explore(Set<Long> res, long seed, int mapId) {
         List<Range> ranges = maps[mapId];
 
         boolean wingIt = true;
 
         for (Range r : ranges) {
-            if (dest >= r.destStart && dest <= r.destEnd) {
-                long nextQuery = r.resolveSrc(dest);
+            if (seed >= r.sourceStart && seed <= r.sourceEnd) {
+                long nextQuery = r.resolveDest(seed);
 
-                if (mapId - 1 >= 0) {
-                    exploreBack(res, nextQuery, mapId - 1);
+                if (mapId+1 < NUM_MAPS) {
+                    explore(res, nextQuery, mapId+1);
                 } else {
                     res.add(nextQuery);
                 }
-
+                
                 wingIt = false;
             }
         }
 
         if (wingIt) {
-            if (mapId - 1 >= 0) {
-                exploreBack(res, dest, mapId - 1);
+            if (mapId+1 < NUM_MAPS) {
+                explore(res, seed, mapId+1);
             } else {
-                res.add(dest);
+                res.add(seed);
             }
         }
     }
@@ -64,21 +62,22 @@ public class Day5_2 {
     public static void main(String[] args) throws IOException {
         parse();
 
-        for (long dest = 0L;; dest++) {
-            Set<Long> possibleSeeds = new HashSet<>();
-            exploreBack(possibleSeeds, dest, NUM_MAPS - 1);
+        long min = Long.MAX_VALUE;
 
-            for (Long seed : possibleSeeds) {
-                for (int i = 0; i < seedStarts.size(); i++) {
-                    long seedStart = seedStarts.get(i);
-                    long seedEnd = seedStart + seedLens.get(i) - 1L;
-                    if (seed >= seedStart && seed <= seedEnd) {
-                        System.out.println(dest);
-                        return;
-                    }
-                }  
+        for (int i = 0; i < seedStarts.size(); i++) {
+            long seedStart = seedStarts.get(i);
+            long seedEnd = seedStart + seedLens.get(i) - 1L;
+
+            for (long seed = seedStart; seed <= seedEnd; seed++) {
+                Set<Long> hs = new HashSet<>();
+                explore(hs, seed, 0);
+                for (Long l : hs) {
+                    min = Math.min(l, min);
+                }
             }
         }
+
+        System.out.println(min);
     }
 
     public static void parse() throws IOException {
