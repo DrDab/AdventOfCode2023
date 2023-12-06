@@ -12,9 +12,9 @@ public class Day6_2 {
 
         long sol = 0L;
 
-        for (int button_time = 1; button_time <= total_time / 2; button_time++) {
+        for (int button_time = 1; button_time < total_time; button_time++) {
             if (button_time * (total_time - button_time) > total_distance) {
-                sol += 2L;
+                sol++;
             }
         }
 
