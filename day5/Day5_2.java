@@ -6,14 +6,12 @@ import java.io.*;
 public class Day5_2 {
     private static class Range {
         public long sourceStart;
-        public long sourceEnd;
         public long destStart;
         public long destEnd;
 
         public Range(long sourceStart, long destStart, long maxDelta) {
             this.sourceStart = sourceStart;
             this.destStart = destStart;
-            this.sourceEnd = sourceStart + maxDelta;
             this.destEnd = destStart + maxDelta;
         }
 
