@@ -11,11 +11,23 @@ public class Day6_2 {
         parse();
 
         long sol = 0L;
+        int button_time = 1;
 
-        for (int button_time = 1; button_time < total_time; button_time++) {
+        // The integer directly preceding midpoint of 1,2,...,total_time-1 if
+        // total_time-1 is odd, is (total_time - 1) / 2.
+        for (; button_time <= (total_time - 1) / 2; button_time++) {
             if (button_time * (total_time - button_time) > total_distance) {
-                sol++;
+                sol += 2L;
             }
+        }
+
+        // Now, button_time is on the midpoint time iff total_time-1 is odd.
+        // Otherwise, we've exceeded the (nonexistent) midpoint time.
+        // If total_time-1 is odd, then there exists a midpoint time which has no
+        // corresponding alternate sol. Check if that time beats the race.
+        if ((total_time - 1) % 2 != 0 &&
+                button_time * (total_time - button_time) > total_distance) {
+            sol++;
         }
 
         System.out.println(sol);
