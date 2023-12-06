@@ -13,6 +13,9 @@ public class Day4_2 {
     private static Map<Integer, Long> cardToMatchMap = new HashMap<>();
     private static Map<Integer, Long> memo = new HashMap<>();
 
+    // Let DP(i) be the number of additional cards that card i awards.
+    // Then, DP(i) = matches(i) + DP(i+1) + DP(i+2) + ... + DP(i+matches(i)).
+
     private static long calculate(int cardNum) {
         if (!cardToMatchMap.keySet().contains(cardNum)) {
             throw new IllegalArgumentException("Doesn't exist " + cardNum);
