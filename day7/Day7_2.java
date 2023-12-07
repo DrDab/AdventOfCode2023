@@ -68,6 +68,7 @@ public class Day7_2 {
         }
 
         if (count.containsKey('J')) {
+            // Try upgrading by replacing all Jokers with most populous card.
             int mostPopulous = -1;
             char mostPopulousCh = '\0';
 
