@@ -62,7 +62,7 @@ public class Day7_1 {
         long sol = 0L;
 
         for (int i = 0; i < hands.size(); i++) {
-            sol += (i+1) * hands.get(i).bid;
+            sol += (i + 1) * hands.get(i).bid;
         }
 
         System.out.println(sol);

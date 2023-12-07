@@ -68,7 +68,8 @@ public class Day7_2 {
             char mostPopulousCh = '\0';
 
             for (Character c : count.keySet()) {
-                if (c == 'J') continue;
+                if (c == 'J')
+                    continue;
                 int num = count.get(c);
                 if (num > mostPopulous) {
                     mostPopulous = num;
