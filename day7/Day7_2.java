@@ -24,7 +24,7 @@ public class Day7_2 {
                 return handHierarchy - other.handHierarchy;
             }
 
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < cards.length(); i++) {
                 char c0 = cards.charAt(i);
                 char c1 = other.cards.charAt(i);
 
