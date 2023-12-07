@@ -59,12 +59,7 @@ public class Day7_2 {
     public static int determineBestHandHierarchy(String cards) {
         for (int i = 0; i < cards.length(); i++) {
             char c = cards.charAt(i);
-
-            if (count.containsKey(c)) {
-                count.put(c, count.get(c) + 1);
-            } else {
-                count.put(c, 1);
-            }
+            count.put(c, count.containsKey(c) ? count.get(c) + 1 : 1);
         }
 
         if (count.containsKey('J')) {
