@@ -56,37 +56,6 @@ public class Day7_2 {
 
     public static Map<Character, Integer> count = new HashMap<>();
 
-    public static boolean getNumNonJs(int... vals) {
-        Map<Integer, Integer> uniqueValCount = new HashMap<>();
-
-        for (int i = 0; i < vals.length; i++) {
-            int val = vals[i];
-
-            if (uniqueValCount.containsKey(val)) {
-                uniqueValCount.put(val, uniqueValCount.get(val) + 1);
-            } else {
-                uniqueValCount.put(val, 1);
-            }
-        }
-
-        for (Character c : count.keySet()) {
-            if (c == 'J')
-                continue;
-            int numCs = count.get(c);
-
-            if (uniqueValCount.containsKey(numCs)) {
-                int remaining = uniqueValCount.get(numCs);
-                if (remaining == 1) {
-                    uniqueValCount.remove(numCs);
-                } else {
-                    uniqueValCount.put(numCs, remaining - 1);
-                }
-            }
-        }
-
-        return uniqueValCount.isEmpty();
-    }
-
     public static int determineBestHandHierarchy(String cards) {
         for (int i = 0; i < cards.length(); i++) {
             char c = cards.charAt(i);
@@ -98,65 +67,24 @@ public class Day7_2 {
             }
         }
 
-        int handHierarchy = 0;
-
         if (count.containsKey('J')) {
-            // We can always upgrade.
-            int numJs = count.get('J');
+            int mostPopulous = -1;
+            char mostPopulousCh = '\0';
 
-            if (numJs == 5 || numJs == 4) {
-                // Can upgrade to five of a kind.
-                handHierarchy = 6;
-            }
-
-            if (numJs == 3) {
-                // JJJXX
-                if (getNumNonJs(2)) {
-                    // Five of a kind.
-                    handHierarchy = 6;
-                } else if (getNumNonJs(1, 1)) {
-                    // Four of a kind.
-                    handHierarchy = 5;
-                }
-            }
-
-            if (numJs == 2) {
-                // JJXXX
-                if (getNumNonJs(3)) {
-                    // Five of a kind.
-                    handHierarchy = 6;
-                } else if (getNumNonJs(2, 1)) {
-                    // Four of a kind.
-                    handHierarchy = 5;
-                } else {
-                    // Three of a kind
-                    handHierarchy = 3;
-                }
-            }
-
-            if (numJs == 1) {
-                // JXXXX
-                if (getNumNonJs(4)) {
-                    // Five of a kind.
-                    handHierarchy = 6;
-                } else if (getNumNonJs(3, 1)) {
-                    // Four of a kind.
-                    handHierarchy = 5;
-                } else if (getNumNonJs(2, 2)) {
-                    // Full house.
-                    handHierarchy = 4;
-                } else if (getNumNonJs(2, 1, 1)) {
-                    // Three of a kind.
-                    handHierarchy = 3;
-                } else {
-                    // One pair.
-                    handHierarchy = 1;
+            for (Character c : count.keySet()) {
+                if (c == 'J') continue;
+                int num = count.get(c);
+                if (num > mostPopulous) {
+                    mostPopulous = num;
+                    mostPopulousCh = c;
                 }
             }
 
             count.clear();
-            return handHierarchy;
+            return determineBestHandHierarchy(cards.replace('J', mostPopulousCh));
         }
+
+        int handHierarchy = 0;
 
         if (count.size() == 1) {
             // Five of a kind.
