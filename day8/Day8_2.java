@@ -8,35 +8,43 @@ public class Day8_2 {
     public static Map<String, String> leftAdj = new HashMap<>();
     public static Map<String, String> rightAdj = new HashMap<>();
 
-    public static boolean isSatisficatory(List<String> nodes) {
-        for (String node : nodes) {
-            if (node.charAt(2) != 'Z') {
-                return false;
-            }
+    public static boolean isSatisficatory(String node) {
+        return node.charAt(2) == 'Z';
+    }
+
+    public static long gcd(long a, long b) {
+        return b == 0 ? a : gcd(b, a % b);
+    }
+
+    public static long lcm(List<Long> vals) {
+        long lcm = vals.get(0);
+
+        for (int i = 1; i < vals.size(); i++) {
+            long val = vals.get(i);
+            lcm *= val / gcd(lcm, val);
         }
 
-        return true;
+        return lcm;
     }
 
     public static void main(String[] args) throws IOException {
         List<String> curNodes = parse();
-        int n = curNodes.size();
-        int step = 0;
+        List<Long> numSteps = new ArrayList<>();
 
-        System.out.println(curNodes);
+        for (int i = 0; i < curNodes.size(); i++) {
+            String currentNode = curNodes.get(i);
+            long step = 0L;
 
-        while (!isSatisficatory(curNodes)) {
-            char nextMove = directions.charAt(step % directions.length());
-
-            for (int i = 0; i < n; i++) {
-                String currentNode = curNodes.get(i);
-                curNodes.set(i, nextMove == 'L' ? leftAdj.get(currentNode) : rightAdj.get(currentNode));
+            while (!isSatisficatory(currentNode)) {
+                char nextMove = directions.charAt((int) (step % directions.length()));
+                currentNode = nextMove == 'L' ? leftAdj.get(currentNode) : rightAdj.get(currentNode);
+                step++;
             }
 
-            step++;
+            numSteps.add(step);
         }
 
-        System.out.println(step);
+        System.out.println(lcm(numSteps));
     }
 
     public static List<String> parse() throws IOException {
