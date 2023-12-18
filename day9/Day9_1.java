@@ -33,8 +33,8 @@ public class Day9_1 {
         
         while (sc.hasNextLine()) {
             StringTokenizer st = new StringTokenizer(sc.nextLine());
-            
             List<Long> deltas = new ArrayList<>();
+            
             while (st.hasMoreTokens()) {
                 deltas.add(Long.parseLong(st.nextToken()));
             }
