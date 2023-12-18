@@ -26,7 +26,6 @@ public class Day9_2 {
         return allZeros ? first : first - extrapolateNext(nextDeltas);
     }
 
-
     public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(new File("inputs/9.in"));
         
