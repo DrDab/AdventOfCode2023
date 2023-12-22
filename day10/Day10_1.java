@@ -12,110 +12,117 @@ public class Day10_1 {
     public static boolean[][] explored;
 
     public static long exploreLoop(int r, int c) {
-        // Identify viable cells to explore based on current cell.
-        // Check 4 directions for viability of exploration.
-        boolean checkNorth = false;
-        boolean checkSouth = false;
-        boolean checkEast = false;
-        boolean checkWest = false;
-        char curCell = map.get(r).charAt(c);
+        long curDist = 0;
 
-        switch (curCell) {
-            case 'S':
-                // If curCell is S, then check any VALID adjacent departing cell.
-                // No cell can be X, so X is the placeholder. Should never be X.
-                char neighbor = 'X';
+        while (r != -1 && c != -1) {
+            // Identify viable cells to explore based on current cell.
+            // Check 4 directions for viability of exploration.
+            boolean checkNorth = false;
+            boolean checkSouth = false;
+            boolean checkEast = false;
+            boolean checkWest = false;
+            char curCell = map.get(r).charAt(c);
 
-                if (r-1 >= 0) {
-                    // Set checkNorth
-                    neighbor = map.get(r-1).charAt(c);
-                    if (neighbor == '|' || neighbor == 'F' || neighbor == '7')
-                        checkNorth = true;
-                }
+            switch (curCell) {
+                case 'S':
+                    // If curCell is S, then check any VALID adjacent departing cell.
+                    // No cell can be X, so X is the placeholder. Should never be X.
+                    char neighbor = 'X';
 
-                if (r+1 < m) {
-                    // Set checkSouth
-                    neighbor = map.get(r+1).charAt(c);
-                    if (neighbor == '|' || neighbor == 'L' || neighbor == 'J')
-                        checkSouth = true;
-                }
+                    if (r - 1 >= 0) {
+                        // Set checkNorth
+                        neighbor = map.get(r - 1).charAt(c);
+                        if (neighbor == '|' || neighbor == 'F' || neighbor == '7')
+                            checkNorth = true;
+                    }
 
-                if (c-1 >= 0) {
-                    // Set checkWest
-                    neighbor = map.get(r).charAt(c-1);
-                    if (neighbor == '-' || neighbor == 'L' || neighbor == 'F')
-                        checkWest = true;
-                }
+                    if (r + 1 < m) {
+                        // Set checkSouth
+                        neighbor = map.get(r + 1).charAt(c);
+                        if (neighbor == '|' || neighbor == 'L' || neighbor == 'J')
+                            checkSouth = true;
+                    }
 
-                if (c+1 < n) {
-                    // Set checkEast
-                    neighbor = map.get(r).charAt(c+1);
-                    if (neighbor == '-' || neighbor == 'J' || neighbor == '7')
-                        checkEast = true;
-                }
+                    if (c - 1 >= 0) {
+                        // Set checkWest
+                        neighbor = map.get(r).charAt(c - 1);
+                        if (neighbor == '-' || neighbor == 'L' || neighbor == 'F')
+                            checkWest = true;
+                    }
 
-                if (neighbor == 'X') throw new IllegalStateException("Didn't identify viable start");
-                break;
+                    if (c + 1 < n) {
+                        // Set checkEast
+                        neighbor = map.get(r).charAt(c + 1);
+                        if (neighbor == '-' || neighbor == 'J' || neighbor == '7')
+                            checkEast = true;
+                    }
 
-            case '|':
-                // If curCell is |, then only check vertical neighbors.
-                checkNorth = true;
-                checkSouth = true;
-                break;
+                    if (neighbor == 'X')
+                        throw new IllegalStateException("Didn't identify viable start");
+                    break;
 
-            case '-':
-                // If curCell is -, then only check horizontal neighbors.
-                checkEast = true;
-                checkWest = true;
-                break;
+                case '|':
+                    // If curCell is |, then only check vertical neighbors.
+                    checkNorth = true;
+                    checkSouth = true;
+                    break;
 
-            case 'L':
-                // Can go North or East.
-                checkNorth  = true;
-                checkEast = true;
-                break;
+                case '-':
+                    // If curCell is -, then only check horizontal neighbors.
+                    checkEast = true;
+                    checkWest = true;
+                    break;
 
-            case 'J':
-                // Can go North or West.
-                checkNorth = true;
-                checkWest = true;
-                break;
+                case 'L':
+                    // Can go North or East.
+                    checkNorth = true;
+                    checkEast = true;
+                    break;
 
-            case '7':
-                // Can go South or West.
-                checkSouth = true;
-                checkWest = true;
-                break;
+                case 'J':
+                    // Can go North or West.
+                    checkNorth = true;
+                    checkWest = true;
+                    break;
 
-            case 'F':
-                // Can go South or East.
-                checkSouth = true;
-                checkEast = true;
-                break;
+                case '7':
+                    // Can go South or West.
+                    checkSouth = true;
+                    checkWest = true;
+                    break;
 
-             // If curCell is . or something else, then we shouldn't get here. Throw exception.
-            default:
-                throw new IllegalStateException("No periods!");
-        }
+                case 'F':
+                    // Can go South or East.
+                    checkSouth = true;
+                    checkEast = true;
+                    break;
 
-        // Mark current cell as explored to prevent recursing back and forth, forever.
-        explored[r][c] = true;
-        
-        // Track current travelled distance
-        long curDist = 1L; 
+                // If curCell is . or something else, then we shouldn't get here. Throw
+                // exception.
+                default:
+                    throw new IllegalStateException("No periods!");
+            }
 
-        // Each cell can only have two neighbors.
-        // We must have gotten to this cell through one of its two neighbors. 
-        // Hence, if one neighbor is unexplored, then that's the only valid one.
-        // No need to recurse elsewhere.
-        if (checkNorth && r-1 >= 0 && !explored[r-1][c]) {
-            curDist += exploreLoop(r-1, c);
-        } else if (checkSouth && r+1 < m && !explored[r+1][c]) {
-            curDist += exploreLoop(r+1, c);
-        } else if (checkEast && c+1 < n && !explored[r][c+1]) {
-            curDist += exploreLoop(r, c+1);
-        } else if (checkWest && c-1 >= 0 && !explored[r][c-1]) {
-            curDist += exploreLoop(r, c-1);
+            // Mark current cell as explored to prevent recursing back and forth, forever.
+            explored[r][c] = true;
+            curDist++;
+
+            // Each cell can only have two neighbors.
+            // We must have gotten to this cell through one of its two neighbors.
+            // Hence, if one neighbor is unexplored, then that's the only valid one.
+            // No need to recurse elsewhere.
+            if (checkNorth && r-1 >= 0 && !explored[r-1][c]) {
+                r--;
+            } else if (checkSouth && r+1 < m && !explored[r+1][c]) {
+                r++;
+            } else if (checkEast && c+1 < n && !explored[r][c+1]) {
+                c++;
+            } else if (checkWest && c-1 >= 0 && !explored[r][c-1]) {
+                c--;
+            } else {
+                r = -1;
+                c = -1;
+            }
         }
 
         return curDist;
@@ -131,13 +138,14 @@ public class Day10_1 {
     }
 
     public static int[] parse() throws IOException {
-        int[] res = new int[]{-1, -1};
+        int[] res = new int[] { -1, -1 };
         Scanner sc = new Scanner(new File("inputs/10.in"));
 
         while (sc.hasNextLine()) {
             String s = sc.nextLine();
 
-            if (n == -1) n = s.length();
+            if (n == -1)
+                n = s.length();
 
             int startCol = s.indexOf('S');
             if (startCol != -1) {
