@@ -29,30 +29,30 @@ public class Day10_1 {
                     // No cell can be X, so X is the placeholder. Should never be X.
                     char neighbor = 'X';
 
-                    if (r - 1 >= 0) {
+                    if (r-1 >= 0) {
                         // Set checkNorth
-                        neighbor = map.get(r - 1).charAt(c);
+                        neighbor = map.get(r-1).charAt(c);
                         if (neighbor == '|' || neighbor == 'F' || neighbor == '7')
                             checkNorth = true;
                     }
 
-                    if (r + 1 < m) {
+                    if (r+1 < m) {
                         // Set checkSouth
-                        neighbor = map.get(r + 1).charAt(c);
+                        neighbor = map.get(r+1).charAt(c);
                         if (neighbor == '|' || neighbor == 'L' || neighbor == 'J')
                             checkSouth = true;
                     }
 
-                    if (c - 1 >= 0) {
+                    if (c-1 >= 0) {
                         // Set checkWest
-                        neighbor = map.get(r).charAt(c - 1);
+                        neighbor = map.get(r).charAt(c-1);
                         if (neighbor == '-' || neighbor == 'L' || neighbor == 'F')
                             checkWest = true;
                     }
 
-                    if (c + 1 < n) {
+                    if (c+1 < n) {
                         // Set checkEast
-                        neighbor = map.get(r).charAt(c + 1);
+                        neighbor = map.get(r).charAt(c+1);
                         if (neighbor == '-' || neighbor == 'J' || neighbor == '7')
                             checkEast = true;
                     }
@@ -97,20 +97,19 @@ public class Day10_1 {
                     checkEast = true;
                     break;
 
-                // If curCell is . or something else, then we shouldn't get here. Throw
-                // exception.
+                // If curCell is . or something else, then we shouldn't get here.
                 default:
                     throw new IllegalStateException("No periods!");
             }
 
-            // Mark current cell as explored to prevent recursing back and forth, forever.
+            // Mark current cell as explored to prevent travelling back and forth, forever.
             explored[r][c] = true;
             curDist++;
 
             // Each cell can only have two neighbors.
             // We must have gotten to this cell through one of its two neighbors.
             // Hence, if one neighbor is unexplored, then that's the only valid one.
-            // No need to recurse elsewhere.
+            // No need to travel elsewhere.
             if (checkNorth && r-1 >= 0 && !explored[r-1][c]) {
                 r--;
             } else if (checkSouth && r+1 < m && !explored[r+1][c]) {
@@ -138,7 +137,7 @@ public class Day10_1 {
     }
 
     public static int[] parse() throws IOException {
-        int[] res = new int[] { -1, -1 };
+        int[] res = new int[]{-1,-1};
         Scanner sc = new Scanner(new File("inputs/10.in"));
 
         while (sc.hasNextLine()) {
