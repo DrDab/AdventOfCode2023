@@ -129,8 +129,6 @@ public class Day10_1 {
 
     public static void main(String[] args) throws IOException {
         int[] startPos = parse();
-        startR = startPos[0];
-        startC = startPos[1];
 
         // Idea: Divide loop length by 2, floor.
         System.out.println(exploreLoop(startPos[0], startPos[1]) / 2L);
