@@ -7,8 +7,6 @@ public class Day10_1 {
     public static int m = 0;
     public static int n = -1;
     public static List<String> map = new ArrayList<>();
-    public static int startR;
-    public static int startC;
     public static boolean[][] explored;
 
     public static long exploreLoop(int r, int c) {
